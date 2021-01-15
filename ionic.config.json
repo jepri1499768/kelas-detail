@@ -1,0 +1,7 @@
+{
+  "name": "logistik-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}

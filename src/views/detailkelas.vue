@@ -1,64 +1,72 @@
 <template>
-    <ion-page>  
-    <ion-header>
-    <ion-toolbar color="success"> 
-        <ion-title>detail kelas </ion-title>
-        </ion-toolbar>
+    <ion-page>
+        <ion-header>
+            <ion-toolbar color="success">
+                <ion-buttons slot="start">
+                    <ion-back-button></ion-back-button>
+                </ion-buttons>
+                <ion-title>Detail Kelas</ion-title>
+            </ion-toolbar>
         </ion-header>
+
         <ion-content>
             <ion-list>
-                <ion-item> 
-                    <ion-label> pertemuan 1 </ion-label> 
-                    <ion-badge color="success" slot="end"> Hadir </ion-badge>
-                    </ion-item> 
-                 <ion-item> 
-                    <ion-label> pertemuan 2 </ion-label> 
-                    <ion-badge color="success" slot="end"> Hadir </ion-badge>
-                    </ion-item> 
-                 <ion-item> 
-                    <ion-label> pertemuan 3 </ion-label> 
-                    <ion-badge color="success" slot="end"> Hadir </ion-badge>
-                    </ion-item> 
-                 <ion-item> 
-                    <ion-label> pertemuan 4 </ion-label> 
-                    <ion-badge color="success" slot="end"> Hadir </ion-badge>
-                    </ion-item> 
-                 <ion-item> 
-                    <ion-label> pertemuan 5 </ion-label> 
-                    <ion-badge color="success" slot="end"> Hadir </ion-badge>
-                    </ion-item> 
-
-                    </ion-list> 
-                    </ion-content>
-        </ion-page>
+                <ion-item v-for="(item,id) in detailkelas" :key="id">
+                    <ion-label>Pertemuan {{ item.pertemuan }}</ion-label>
+                    <ion-badge color="success" 
+                        slot="end">{{ item.status}}</ion-badge>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-page>
 </template>
 
 <script>
-import  { 
+    import {
         IonHeader,
         IonToolbar,
+        IonPage,
         IonTitle,
         IonContent,
         IonList,
         IonItem,
         IonLabel,
-        IonBadge
-} from '@ionic/vue' 
-import { defineComponent } from 'vue'
+        IonBadge,
+        IonButtons,
+        IonBackButton
+    } from '@ionic/vue'
+    import { defineComponent } from 'vue'
+    import axios from 'axios'
     export default defineComponent({
+        data(){
+            return {
+                detailkelas: []
+            }
+        },
         components: {
-        IonHeader,
-        IonToolbar,
-        IonTitle,
-        IonContent,
-        IonList,
-        IonItem,
-        IonLabel,
-        IonBadge
+            IonHeader,
+            IonToolbar,
+            IonPage,
+            IonTitle,
+            IonContent,
+            IonList,
+            IonItem,
+            IonLabel,
+            IonBadge,
+            IonButtons,
+            IonBackButton
+        },
+        mounted(){
+            axios.post("http://3.234.139.56/api/detailkelas",{
+                "user_id": localStorage.getItem("user_id"),
+                "kelas_id": this.$route.params.id
+            })
+            .then(response => {
+                this.detailkelas = response.data.data
+            })
         }
     })
 </script>
 
 <style lang="scss" scoped>
-
 </style>

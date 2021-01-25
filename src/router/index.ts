@@ -28,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path : '/kelas/:id',
-    name : 'detail kelas',
+    name : 'Kelas Detail',
     component: () => import('../views/detailkelas.vue')
   }
 ]

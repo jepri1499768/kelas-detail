@@ -1,34 +1,19 @@
 <template>
     <ion-page>
-        <ion-header> 
+        <ion-header>
             <ion-toolbar color="success">
-                <ion-title> kelas</ion-title>
+                <ion-title>Kelas</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <ion-list> 
-                <ion-item>
-                <ion-label> 
-                kelas 1 
-                <span class="rata-kanan"> no ruang </span>
-                <p> mata kuliah </p>
-                </ion-label>
-                </ion-item>
-                <ion-item><ion-label> kelas 2 <span class="rata-kanan"> no ruang </span>
-                <p> mata kuliah </p>
-                </ion-label>
-                </ion-item>
-                <ion-item><ion-label> kelas 3 <span class="rata-kanan"> no ruang </span>
-                <p> mata kuliah </p>
-                </ion-label>
-                </ion-item>
-               <ion-item><ion-label> kelas 4 <span class="rata-kanan"> no ruang </span>
-                <p> mata kuliah </p>
-                </ion-label>
-                </ion-item>
-                <ion-item><ion-label> kelas 5 <span class="rata-kanan"> no ruang </span>
-                <p> mata kuliah </p>
-                </ion-label>
+            <ion-list>
+                <ion-item v-for="item in kelas" :key="item.id" 
+                    :routerLink="'/kelas/'+item.id">
+                    <ion-label>
+                        {{ item.nama }}
+                        <span class="rata-kanan">No Ruang {{ item.noruang }}</span>
+                        <p>{{ item.matakuliah }}</p>
+                    </ion-label>
                 </ion-item>
             </ion-list>
         </ion-content>
@@ -37,33 +22,46 @@
 
 <script>
     import {
-                IonPage,
-                IonHeader,
-                IonToolbar,
-                IonTitle,
-                IonContent,
-                IonList,
-                IonItem,
-                 IonLabel
-        } from '@ionic/vue'
-        import { defineComponent } from 'vue'
-
-    export default defineComponent({ 
+        IonPage,
+        IonHeader,
+        IonToolbar,
+        IonTitle,
+        IonContent,
+        IonList,
+        IonItem,
+        IonLabel
+    } from '@ionic/vue'
+    import { defineComponent } from 'vue'
+    import axios from 'axios'
+    export default defineComponent({
+        data(){
+            return {
+                kelas:[]
+            }
+        },
         components: {
-                IonPage,
-                IonHeader,
-                IonToolbar,
-                IonTitle,
-                IonContent,
-                IonList,
-                IonItem,
-                IonLabel
+            IonPage,
+            IonHeader,
+            IonToolbar,
+            IonTitle,
+            IonContent,
+            IonList,
+            IonItem,
+            IonLabel
+        },
+        mounted(){
+            axios.post("http://3.234.139.56/api/kelas",{
+                "user_id": localStorage.getItem("user_id")
+            })
+            .then(response => {
+                this.kelas = response.data.data
+            })
         }
-        
-    }
-    )
+    })
 </script>
-<style scoped>.rata-kanan { 
+
+<style scoped>
+.rata-kanan {
     float: right;
 }
-</style> 
+</style>
